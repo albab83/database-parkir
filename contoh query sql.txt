@@ -1,0 +1,86 @@
+1. Contoh Query Select dengan where;
+
+	WHERE:
+		1.  mencari data sesuai no kendaraan,
+			
+			SELECT * FROM data_pengendara
+			WHERE no_kendaraan='1008';
+		
+		2.	Pilih semua data pengendara dengan no kendaraan Lebih besar dari atau sama 1003
+			
+			SELECT * FROM data_pengendara
+			WHERE no_kendaraan => 1005;
+		
+		3.	pilihsemua data_pengendara yang awal hurufnya A
+			
+			SELECT * FROM data_pengendara
+			WHERE nama LIKE 'a%';
+		
+		4.	memilih nilai dalam rentang tertentu. Nilainya bisa berupa angka, teks, atau tanggal
+			
+			SELECT * FROM data_pengendara
+			WHERE no_kendaraan BETWEEN 1005 AND 1011;
+			
+		5. query ini digunakan untuk mengembalikan hanya nilai yang berbeda	
+		
+			SELECT DISTINCT jenis_kendaraan FROM jenis_kendaraan;
+		
+	ORDER BY:
+		1.	query untuk mengurutkan nilai data paling kecil
+			
+			SELECT * FROM data_pengendara
+			ORDER BY nama DESC;
+		
+		2.	query ini kebalikan dari no satu
+		
+			SELECT * FROM data_pengendara
+			ORDER BY nama ASC;
+			
+	LIMIT:
+		1.	memngambil 5 data_pengendara sesuai abjad tertentu
+		
+			SELECT * FROM data_pengendara
+			ORDER BY nama ASC
+			LIMIT 5 OFFSET 0; (offset ini adalah untuk mengambil data pertama sesuai index tertentu) 
+				
+2. contoh query untuk menampilkan jumah data berdasarkan pengguna tertentu (berapa kali pengendara masuk parkir)
+	
+	a.	query berapa kali data_pengendara masuk parkir
+		
+		SELECT data_pengendara.nama,
+		COUNT(masuk_parkir.no_kendaraan) AS jumlah_parkir
+		FROM
+		masuk_parkir
+		INNER JOIN data_pengendara ON masuk_parkir.no_kendaraan = data_pengendara.no_kendaraan
+		GROUP BY data_pengendara.nama;
+
+	b. 	hitung rata rata jam parkir setiap pengendara,
+
+		SELECT data_pengendara.nama, archive_parkir.total_jam,
+		COUNT(archive_parkir.no_kendaraan) AS jumlah_parkir,
+        AVG(archive_parkir.total_jam) AS rata_rata_jam
+		FROM
+		archive_parkir
+		INNER JOIN data_pengendara ON archive_parkir.no_kendaraan = data_pengendara.no_kendaraan
+		GROUP BY data_pengendara.nama;
+
+3. query untuk UPDATE data dengan kriteria tertentu dengan WHERE
+
+	a.	UPDATE data_pengendara
+		SET ContactName = 'maman', jenis_kendaraan= 'motor'
+		WHERE no_kendaraan = 1001;
+
+	b.	UPDATE data_pengendara
+		SET nama='mail'
+		WHERE jenis_kendaraan='motor';
+		
+4.	query untuk DELETE data dengan kriteria tertentu dengan WHERE
+
+	a.	kalau menggunakan query ini biasanya kalau ada value yg duplikat maka semua nilai yg bernama saeful akan di hapus
+	
+		DELETE FROM data_pengendara WHERE nama='saeful';
+	
+	b.	berbeda dengan no satu query ini hanya akan menghapus 1 data karena kondisi nya memakai,
+		no_kendaraan sedangkan no_kendaraan ini nilai nya primary key tidak akan ada yang sama valuenya.
+	
+		DELETE FROM data_pengendara WHERE no_kendaraan='1005';
